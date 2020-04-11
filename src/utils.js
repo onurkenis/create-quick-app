@@ -26,7 +26,7 @@ export const getTemplateSourceDirectory = () => path.resolve(__filename, TEMPLAT
 export const getLogoTargetDirectory = (options) =>
   `${process.cwd()}/${options.packageName.toLowerCase()}/${LOGO_PATH_IN_TEMPLATE}`;
 
-export const getLogoSourceDirectory = (options) => path.resolve(__filename, '../..', options.icon);
+export const getLogoSourceDirectory = (options) => path.resolve(process.cwd(), options.icon);
 
 export const getUpdatedManifest = (options, manifestJson) => {
   const manifest = JSON.parse(manifestJson);
