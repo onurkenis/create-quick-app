@@ -98,15 +98,15 @@ export async function createProject(options) {
       task: () => copyTemplateFiles(options),
     },
     {
-      title: 'Uptade manifest.json',
+      title: 'Update manifest.json',
       task: () => modifyManifestFile(options),
     },
     {
-      title: 'Uptade hello.ux',
+      title: 'Update hello.ux',
       task: () => modifyHelloUx(options),
     },
     {
-      title: 'Uptade app icon',
+      title: 'Update app icon',
       task: () => modifyIcon(options),
     },
   ]);
