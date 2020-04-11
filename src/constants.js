@@ -1,5 +1,9 @@
 export const TEMPLATE_PATH = '../../templates/quickapp';
 export const DEFAULT_PACKAGE_NAME = 'com.onurkenis.quickapp';
+export const DEFAULT_APP_NAME = 'create-quick-app';
+export const DEFAULT_SOURCE_URL = 'http://github.com/onurkenis/create-quick-app';
 export const MANIFEST_PATH_IN_TEMPLATE = 'src/manifest.json';
-export const UX_FILE_PATH_IN_TEMPLATE = 'src/manifest.json';
+export const UX_FILE_PATH_IN_TEMPLATE = 'src/Hello/hello.ux';
 export const UX_FILE_KEY_TO_REPLACE = '{{sourceUrl}}';
+export const LOGO_PATH_IN_TEMPLATE = 'src/Common/logo.png';
+export const LOGO_PLACEHOLDER = 'Leave empty to use default';

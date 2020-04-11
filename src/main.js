@@ -1,20 +1,19 @@
 import chalk from 'chalk';
 import fs from 'fs';
-import ncp from 'ncp';
-import path from 'path';
 import Listr from 'listr';
-import { promisify } from 'util';
 import replace from 'replace-in-file';
 import {
   getUpdatedManifest,
   getManifestFilePath,
   getUxFilePath,
-  getTargetDirectory,
+  getLogoSourceDirectory,
+  getLogoTargetDirectory,
+  getTemplateTargetDirectory,
+  getTemplateSourceDirectory,
+  copy,
+  access,
 } from './utils';
-import { TEMPLATE_PATH, UX_FILE_KEY_TO_REPLACE } from './constants';
-
-const access = promisify(fs.access);
-const copy = promisify(ncp);
+import { UX_FILE_KEY_TO_REPLACE } from './constants';
 
 async function copyTemplateFiles(options) {
   return copy(options.templateDirectory, options.targetDirectory, {
@@ -56,13 +55,33 @@ async function modifyHelloUx(options) {
   }
 }
 
+async function modifyIcon(options) {
+  if (!options.icon) {
+    console.log('%s Default icon will be used', chalk.greenBright.bold('OK'));
+    return;
+  }
+
+  const iconDir = getLogoSourceDirectory(options);
+
+  try {
+    await access(iconDir, fs.constants.R_OK);
+  } catch (err) {
+    console.error('%s Invalid icon path. Default icon will be used', chalk.redBright.bold('WARN'));
+    return;
+  }
+
+  copy(iconDir, getLogoTargetDirectory(options), {
+    clobber: true,
+  });
+}
+
 export async function createProject(options) {
   options = {
     ...options,
-    targetDirectory: options.targetDirectory || getTargetDirectory(),
+    targetDirectory: options.targetDirectory || getTemplateTargetDirectory(options),
   };
 
-  const templateDir = path.resolve(__filename, TEMPLATE_PATH);
+  const templateDir = getTemplateSourceDirectory();
 
   options.templateDirectory = templateDir;
 
@@ -85,6 +104,10 @@ export async function createProject(options) {
     {
       title: 'Uptade hello.ux',
       task: () => modifyHelloUx(options),
+    },
+    {
+      title: 'Uptade app icon',
+      task: () => modifyIcon(options),
     },
   ]);
 

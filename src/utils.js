@@ -1,12 +1,32 @@
-import { MANIFEST_PATH_IN_TEMPLATE, UX_FILE_PATH_IN_TEMPLATE } from './constants';
+import fs from 'fs';
+import ncp from 'ncp';
+import path from 'path';
+import { promisify } from 'util';
+import {
+  MANIFEST_PATH_IN_TEMPLATE,
+  UX_FILE_PATH_IN_TEMPLATE,
+  LOGO_PATH_IN_TEMPLATE,
+  TEMPLATE_PATH,
+} from './constants';
+
+export const access = promisify(fs.access);
+
+export const copy = promisify(ncp);
 
 export const getUxFilePath = (options) => `${options.targetDirectory}/${UX_FILE_PATH_IN_TEMPLATE}`;
 
 export const getManifestFilePath = (options) =>
   `${options.targetDirectory}/${MANIFEST_PATH_IN_TEMPLATE}`;
 
-export const getTargetDirectory = (options) =>
+export const getTemplateTargetDirectory = (options) =>
   `${process.cwd()}/${options.packageName.toLowerCase()}`;
+
+export const getTemplateSourceDirectory = () => path.resolve(__filename, TEMPLATE_PATH);
+
+export const getLogoTargetDirectory = (options) =>
+  `${process.cwd()}/${options.packageName.toLowerCase()}/${LOGO_PATH_IN_TEMPLATE}`;
+
+export const getLogoSourceDirectory = (options) => path.resolve(__filename, '../..', options.icon);
 
 export const getUpdatedManifest = (options, manifestJson) => {
   const manifest = JSON.parse(manifestJson);
