@@ -3,6 +3,12 @@ import fs from 'fs';
 import path from 'path';
 import Listr from 'listr';
 
+async function copyTemplateFiles(options) {
+    return copy(options.templateDirectory, options.targetDirectory, {
+        clobber: false,
+    });
+}
+
 export async function createProject(options) {
     options = {
         ...options,
@@ -27,7 +33,7 @@ export async function createProject(options) {
     const tasks = new Listr([
         {
             title: 'Copy project files',
-            task: () => console.log("COPY_PROJECT_FILE"),
+            task: () => copyTemplateFiles(options),
         },
         {
             title: 'Uptade manifest.json',
