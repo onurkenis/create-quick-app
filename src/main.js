@@ -9,6 +9,31 @@ async function copyTemplateFiles(options) {
     });
 }
 
+function modifyManifestFile(options) {
+
+    const manifestPath = `${options.targetDirectory}/src/manifest.json`;
+
+    fs.readFile(manifestPath, 'utf8', (error, manifestJson) => {
+        if (error) {
+            console.log("File read failed:", error)
+            return
+        }
+
+        const manifest = JSON.parse(manifestJson);
+        
+        manifest.package = options.packageName;
+        manifest.name = options.appName;
+
+        // update manifest
+        fs.writeFile(manifestPath, JSON.stringify(manifest, null, 2), 'utf-8', (error) => {
+            if (error) {
+                console.log("File read failed:", error)
+                return
+            }
+        });
+    });
+}
+
 export async function createProject(options) {
     options = {
         ...options,
@@ -37,7 +62,7 @@ export async function createProject(options) {
         },
         {
             title: 'Uptade manifest.json',
-            task: () => console.log("UPDATE_MANIFEST_FILE"),
+            task: () => modifyManifestFile(),
         },
         {
             title: 'Uptade hello.ux',
