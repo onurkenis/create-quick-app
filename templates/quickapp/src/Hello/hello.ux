@@ -1,0 +1,110 @@
+<!-- -->
+<template>
+    <div class="doc-page">
+        <!-- Replace the link to the H5 app -->
+        <web class="web-page" src="{{loadUrl}}" trustedurl="{{list}}" onpagestart="onPageStart" onpagefinish="onPageFinish"
+            onmessage="onMessage" ontitlereceive="onTitleReceive" onerror="onError" id="web">
+        </web>
+    </div>
+</template>
+
+<style>
+    .doc-page {
+        flex-direction: column;
+        flex-direction: column;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+    }
+
+    .web-page {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<script>
+    import router from "@system.router"
+    import storage from '@system.storage';
+
+    export default {
+        props: ['websrc'],
+        data: {
+            title: "",
+            loadUrl: "{{sourceUrl}}",
+
+            // Here the whitelist settings, when the loading page has multiple addresses, such as the successful loading of the login address and the inconsistent entry address, it needs to set the whitelist to do so.
+            list: ["new RegExp('https?.*')"]
+        },
+
+        onInit() {
+            storage.get({
+                key: 'lastUrl',
+                success: (data) => {
+                    if (data) {
+                        this.loadUrl = data
+                    } else {
+                        this.loadUrl = this.homeUrl
+                    }
+                    console.log(`loadUrl is ${this.loadUrl}`);
+                },
+                fail: function (data, code) {
+                    console.log("Get last url from storage fail, code = " + code);
+                }
+            })
+        },
+
+        onPageStart(e) {
+            console.info('pagestart: ' + e.url)
+        },
+
+        // Each page switch triggers
+        onPageFinish(e) {
+            console.info('pagefinish: ' + e.url, e.canBack, e.canForward)
+            if (e.url) {
+                storage.set({
+                    key: 'lastUrl',
+                    value: e.url,
+                    success: function (data) {
+                        console.log(`Save last url success. ${e.url}`);
+                    },
+                    fail: function (data, code) {
+                        console.log('Save last url fail, code = ' + code);
+                    }
+                })
+            }
+        },
+
+        onTitleReceive(e) {
+            this.title = e.title;
+        },
+        onError(e) {
+            console.info('pageError : ' + e.errorMsg)
+        },
+        onMessage(e) {
+            console.info('onmessage e = ' + e.message + ", url = " + e.url);
+        },
+        onShow: function () {
+            console.info(" onshow");
+          
+        },
+        onHide: function () {
+            console.info("  onHide");
+        },
+        onBackPress() {
+            console.log('onBackPress')
+            this.$element('web').canBack({
+                callback: function (e) {
+                    if (e) {
+                        console.log('web back')
+                        this.$element('web').back()
+                    } else {
+                        console.log('router back')
+                        router.back()
+                    }
+                }.bind(this)
+            })
+            return true
+        },
+
+    }
+</script>
