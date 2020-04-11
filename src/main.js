@@ -5,6 +5,12 @@ import path from 'path';
 import Listr from 'listr';
 import { promisify } from 'util';
 import replace from 'replace-in-file';
+import {
+    getUpdatedManifest,
+    getManifestFilePath,
+    getUxFilePath,
+    getTargetDirectory,
+} from './utils';
 
 const access = promisify(fs.access);
 const copy = promisify(ncp);
@@ -16,32 +22,25 @@ async function copyTemplateFiles(options) {
 }
 
 function modifyManifestFile(options) {
-
-    const manifestPath = `${options.targetDirectory}/src/manifest.json`;
+    const manifestPath = getManifestFilePath(options);
 
     fs.readFile(manifestPath, 'utf8', (error, manifestJson) => {
         if (error) {
-            console.log("File read failed:", error)
-            return
+            console.log('File read failed:', error);
+            return;
         }
 
-        const manifest = JSON.parse(manifestJson);
-        
-        manifest.package = options.packageName;
-        manifest.name = options.appName;
-
-        // update manifest
-        fs.writeFile(manifestPath, JSON.stringify(manifest, null, 2), 'utf-8', (error) => {
+        fs.writeFile(manifestPath, getUpdatedManifest(), 'utf-8', (error) => {
             if (error) {
-                console.log("File read failed:", error)
-                return
+                console.log('File read failed:', error);
+                return;
             }
         });
     });
 }
 
 async function modifyHelloUx(options) {
-    const helloUxPath = `${options.targetDirectory}/src/Hello/hello.ux`;
+    const helloUxPath = getUxFilePath(options);
 
     const replaceOptions = {
         files: helloUxPath,
@@ -50,25 +49,19 @@ async function modifyHelloUx(options) {
     };
 
     try {
-        const results = await replace(replaceOptions)
-        console.log('Replacement results:', results);
-    }
-    catch (error) {
-        console.error('Error occurred:', error);
+        await replace(replaceOptions);
+    } catch (error) {
+        console.error('%s Error occurred during creation of hello.ux', chalk.red.bold('ERROR'));
     }
 }
 
 export async function createProject(options) {
     options = {
         ...options,
-        targetDirectory: options.targetDirectory ||
-            `${process.cwd()}/${options.packageName.toLowerCase()}`,
+        targetDirectory: options.targetDirectory || getTargetDirectory(),
     };
 
-    const templateDir = path.resolve(
-        __filename,
-        '../../templates/quickapp'
-    );
+    const templateDir = path.resolve(__filename, '../../templates/quickapp');
 
     options.templateDirectory = templateDir;
 
@@ -91,7 +84,7 @@ export async function createProject(options) {
         {
             title: 'Uptade hello.ux',
             task: () => modifyHelloUx(options),
-        }
+        },
     ]);
 
     await tasks.run();
