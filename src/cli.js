@@ -11,7 +11,7 @@ function parseArgumentsIntoOptions(rawArgs) {
             argv: rawArgs.slice(2),
         }
     );
-    
+
     return {
         appName: args['--appName'] || false,
         packageName: args['--packageName'] || false,
@@ -19,7 +19,38 @@ function parseArgumentsIntoOptions(rawArgs) {
     };
 }
 
+async function promptForMissingOptions(options) {
+    const questions = [];
+
+    if (!options.appName) {
+        questions.push({
+            type: 'input',
+            name: 'appName',
+            message: 'Enter your app name:',
+        });
+    }
+
+    if (!options.packageName) {
+        questions.push({
+            type: 'input',
+            name: 'packageName',
+            message: 'Enter your package name:',
+            default: 'com.onurkenis.quickapp'
+        });
+    }
+
+    const answers = await inquirer.prompt(questions);
+    return {
+        ...options,
+        appName: options.appName || answers.appName,
+        packageName: options.packageName || answers.packageName,
+        sourceUrl: options.sourceUrl || answers.sourceUrl
+    };
+}
+
 export async function cli(args) {
     const options = parseArgumentsIntoOptions(args);
+    options = await promptForMissingOptions(options);
+
     console.log(options)
 }
