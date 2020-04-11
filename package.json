@@ -1,0 +1,33 @@
+{
+  "name": "@onurkenis/create-project",
+  "version": "1.0.0",
+  "description": "A CLI to generate Huawei Quick App easily",
+  "main": "src/index.js",
+  "bin": {
+    "@onurkenis/create-project": "bin/create-project",
+    "create-project": "bin/create-project"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cli",
+    "quick-app",
+    "huawei",
+    "quick-app-generator"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "arg": "^4.1.3",
+    "chalk": "^4.0.0",
+    "esm": "^3.2.25",
+    "inquirer": "^7.1.0",
+    "listr": "^0.14.3",
+    "ncp": "^2.0.0",
+    "replace-in-file": "^5.0.2"
+  }
+}
