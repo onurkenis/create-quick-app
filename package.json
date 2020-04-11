@@ -22,6 +22,11 @@
     "quick-app-cli",
     "quick-app-generator"
   ],
+  "files": [
+    "bin/",
+    "src/",
+    "templates/"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
