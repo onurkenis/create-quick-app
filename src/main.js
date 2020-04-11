@@ -11,6 +11,7 @@ import {
   getUxFilePath,
   getTargetDirectory,
 } from './utils';
+import { TEMPLATE_PATH, UX_FILE_KEY_TO_REPLACE } from './constants';
 
 const access = promisify(fs.access);
 const copy = promisify(ncp);
@@ -30,7 +31,7 @@ function modifyManifestFile(options) {
       return;
     }
 
-    fs.writeFile(manifestPath, getUpdatedManifest(), 'utf-8', (error) => {
+    fs.writeFile(manifestPath, getUpdatedManifest(options, manifestJson), 'utf-8', (error) => {
       if (error) {
         console.log('File read failed:', error);
         return;
@@ -44,7 +45,7 @@ async function modifyHelloUx(options) {
 
   const replaceOptions = {
     files: helloUxPath,
-    from: '{{sourceUrl}}',
+    from: UX_FILE_KEY_TO_REPLACE,
     to: options.sourceUrl,
   };
 
@@ -61,7 +62,7 @@ export async function createProject(options) {
     targetDirectory: options.targetDirectory || getTargetDirectory(),
   };
 
-  const templateDir = path.resolve(__filename, '../../templates/quickapp');
+  const templateDir = path.resolve(__filename, TEMPLATE_PATH);
 
   options.templateDirectory = templateDir;
 

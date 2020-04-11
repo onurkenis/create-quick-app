@@ -1,6 +1,7 @@
 import arg from 'arg';
 import inquirer from 'inquirer';
 import { createProject } from './main';
+import { DEFAULT_PACKAGE_NAME } from './constants';
 
 function parseArgumentsIntoOptions(rawArgs) {
   const args = arg(
@@ -37,7 +38,7 @@ async function promptForMissingOptions(options) {
       type: 'input',
       name: 'packageName',
       message: 'Enter your package name:',
-      default: 'com.onurkenis.quickapp',
+      default: DEFAULT_PACKAGE_NAME,
     });
   }
 
