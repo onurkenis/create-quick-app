@@ -1,7 +1,13 @@
 import chalk from 'chalk';
 import fs from 'fs';
+import ncp from 'ncp';
 import path from 'path';
 import Listr from 'listr';
+import { promisify } from 'util';
+import replace from 'replace-in-file';
+
+const access = promisify(fs.access);
+const copy = promisify(ncp);
 
 async function copyTemplateFiles(options) {
     return copy(options.templateDirectory, options.targetDirectory, {
@@ -52,7 +58,6 @@ async function modifyHelloUx(options) {
     }
 }
 
-
 export async function createProject(options) {
     options = {
         ...options,
@@ -81,11 +86,11 @@ export async function createProject(options) {
         },
         {
             title: 'Uptade manifest.json',
-            task: () => modifyManifestFile(),
+            task: () => modifyManifestFile(options),
         },
         {
             title: 'Uptade hello.ux',
-            task: () => modifyHelloUx(),
+            task: () => modifyHelloUx(options),
         }
     ]);
 
