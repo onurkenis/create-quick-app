@@ -39,6 +39,14 @@ async function promptForMissingOptions(options) {
         });
     }
 
+    if (!options.sourceUrl) {
+        questions.push({
+            type: 'input',
+            name: 'sourceUrl',
+            message: 'Enter your source url:',
+        });
+    }
+
     const answers = await inquirer.prompt(questions);
     return {
         ...options,
