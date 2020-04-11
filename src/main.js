@@ -34,6 +34,25 @@ function modifyManifestFile(options) {
     });
 }
 
+async function modifyHelloUx(options) {
+    const helloUxPath = `${options.targetDirectory}/src/Hello/hello.ux`;
+
+    const replaceOptions = {
+        files: helloUxPath,
+        from: '{{sourceUrl}}',
+        to: options.sourceUrl,
+    };
+
+    try {
+        const results = await replace(replaceOptions)
+        console.log('Replacement results:', results);
+    }
+    catch (error) {
+        console.error('Error occurred:', error);
+    }
+}
+
+
 export async function createProject(options) {
     options = {
         ...options,
@@ -66,7 +85,7 @@ export async function createProject(options) {
         },
         {
             title: 'Uptade hello.ux',
-            task: () => console.log("UPDATE_HELLO_UX"),
+            task: () => modifyHelloUx(),
         }
     ]);
 
