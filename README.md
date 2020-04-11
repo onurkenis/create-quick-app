@@ -2,7 +2,7 @@
 
 Handy CLI to create [Huawei Quick Apps](https://developer.huawei.com/consumer/en/quickApp) from H5 by using command line easily. 
 
-Set up a modern installation-free app from any website by running only one command. 
+Set up a modern installation-free app from any web url by running only one command. 
 
 ![Create Quick App](demo/create-quick-app.gif)
 
