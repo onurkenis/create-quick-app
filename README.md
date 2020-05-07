@@ -4,20 +4,24 @@ Handy CLI to create [Huawei Quick Apps](https://developer.huawei.com/consumer/en
 
 Set up a modern installation-free app from any web url by running only one command.
 
-![Create Quick App](demo/create-quick-app.gif)
-
 ## Usage
 
 1. To create single QuickApp:
 
 ```sh
-npx @onurkenis/create-quick-app
+npm install -g @onurkenis/create-quick-app   # install globally once
+create-quick-app                             # run from anywhere
+
+npx @onurkenis/create-quick-app              # run via npx without installing
 ```
 
 2. Batch application creation from json.
 
 ```sh
-npx @onurkenis/create-quick-app --fromJson=path_of_json
+npm install -g @onurkenis/create-quick-app               # install globally once
+create-quick-app --fromJson=path_of_json                 # run from anywhere
+
+npx @onurkenis/create-quick-app --fromJson=path_of_json  # run via npx without installing 
 ```
 
 ## Options
