@@ -31,10 +31,10 @@ _Note: batch creation is only available in-line._
 
 ```js
 const args = {
-  '--appName': String, // name of your application
-  '--packageName': String, // package name of your application
-  '--url': String, // url to render in app
-  '--icon': String, // path of app icon. default icon will be used if this field is empty
+  '--appName': String,      // name of your application
+  '--packageName': String,  // package name of your application
+  '--url': String,          // url to render in app
+  '--icon': String,         // path of app icon. default icon will be used if this field is empty
 };
 ```
 
