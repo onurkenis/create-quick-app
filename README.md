@@ -4,6 +4,8 @@ Handy CLI to create [Huawei Quick Apps](https://developer.huawei.com/consumer/en
 
 Set up a modern installation-free app from any web url by running only one command.
 
+![Create Quick App](demo/create-quick-app.gif)
+
 ## Usage
 
 1. To create single QuickApp:
