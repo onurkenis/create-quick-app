@@ -55,7 +55,7 @@ npx @onurkenis/create-quick-app
       "appName": "TestApp1",
       "packageName": "com.onurkenis.one",
       "url": "https://github.com/onurkenis/create-quick-app",
-      "icon": "optional_icon_path.jpg"
+      "icon": "C:/Pictures/optional_icon.jpg"
     },
     {
       "appName": "TestApp2",
