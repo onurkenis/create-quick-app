@@ -75,6 +75,46 @@ async function modifyIcon(options) {
   });
 }
 
+export function createProjectBatch(options) {
+  const jsonPath = options.fromJson;
+
+  fs.readFile(jsonPath, 'utf8', async (error, data) => {
+    if (error) {
+      console.error('%s Invalid Json path' + `\n${error}`, chalk.red.bold('ERROR'));
+      process.exit(1);
+    }
+
+    try {
+      data = JSON.parse(data);
+    } catch (exeption) {
+      console.error('%s Invalid json', chalk.red.bold('ERROR'));
+      process.exit(1);
+    }
+
+    if (!data.projects) {
+      console.error('%s Invalid json', chalk.red.bold('ERROR'));
+      console.error('%s', chalk.bgRed.bold('KEY MISSING...'));
+      process.exit(1);
+    }
+
+    for (const [index, project] of data.projects.entries()) {
+      const { appName, packageName, sourceUrl } = project;
+      if (appName && packageName && sourceUrl) {
+        console.log(
+          `%s quick-app: ${appName} - #${index + 1}`,
+          chalk.bgGreen.bold('STARTING...'),
+        );
+        await createProject(project);
+      } else {
+        console.error(
+          `%s Invalid project properties at quick-app #${index + 1}\n`,
+          chalk.red.bold('Skipping...'),
+        );
+      }
+    }
+  });
+}
+
 export async function createProject(options) {
   options = {
     ...options,
@@ -112,6 +152,5 @@ export async function createProject(options) {
   ]);
 
   await tasks.run();
-  console.log('%s Project ready', chalk.green.bold('DONE'));
-  return true;
+  console.log('%s Project ready\n', chalk.green.bold('DONE'));
 }

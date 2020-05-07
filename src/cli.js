@@ -1,6 +1,6 @@
 import arg from 'arg';
 import inquirer from 'inquirer';
-import { createProject } from './main';
+import { createProject, createProjectBatch } from './main';
 import {
   DEFAULT_PACKAGE_NAME,
   DEFAULT_SOURCE_URL,
@@ -11,6 +11,7 @@ import {
 function parseArgumentsIntoOptions(rawArgs) {
   const args = arg(
     {
+      '--fromJson': String,
       '--appName': String,
       '--packageName': String,
       '--url': String,
@@ -22,6 +23,7 @@ function parseArgumentsIntoOptions(rawArgs) {
   );
 
   return {
+    fromJson: args['--fromJson'] || false,
     appName: args['--appName'] || false,
     packageName: args['--packageName'] || false,
     sourceUrl: args['--url'] || false,
@@ -30,6 +32,7 @@ function parseArgumentsIntoOptions(rawArgs) {
 }
 
 async function promptForMissingOptions(options) {
+  if (options.fromJson) return;
   const questions = [];
 
   if (!options.appName) {
@@ -84,7 +87,11 @@ async function promptForMissingOptions(options) {
 
 export async function cli(args) {
   let options = parseArgumentsIntoOptions(args);
-  options = await promptForMissingOptions(options);
-
-  await createProject(options);
+  if (!options.fromJson) {
+    options = await promptForMissingOptions(options);
+    await createProject(options);
+  } else {
+    createProjectBatch(options);
+  }
+  return true;
 }
