@@ -12,6 +12,7 @@ import {
   getTemplateSourceDirectory,
   copy,
   access,
+  asyncExec,
 } from './utils';
 import { UX_FILE_KEY_TO_REPLACE } from './constants';
 
@@ -75,6 +76,28 @@ async function modifyIcon(options) {
   });
 }
 
+async function installDependencies(options) {
+  const changeDirectory = `cd ${options.targetDirectory}`;
+  const installDependencies = 'npm install';
+
+  await asyncExec(`${changeDirectory} && ${installDependencies}`)
+    .then(() => {
+      console.log(`%s Dependencies installed`, chalk.bgGreen.bold('OK'));
+    })
+    .catch(() => {
+      console.error('%s Installing dependencies failed.', chalk.red.bold('ERROR'));
+    });
+}
+
+async function generateRpk(options) {
+  const changeDirectory = `cd ${options.targetDirectory}`;
+  const build = 'npm run release';
+
+  await asyncExec(`${changeDirectory} && ${build}`)
+    .then(console.log(`%s Rpk generated `, chalk.bgGreen.bold('OK')))
+    .catch(console.error('%s Installing dependenciess failed.', chalk.red.bold('ERROR')));
+}
+
 export function createProjectBatch(options) {
   const jsonPath = options.fromJson;
 
@@ -100,10 +123,7 @@ export function createProjectBatch(options) {
     for (const [index, project] of data.projects.entries()) {
       const { appName, packageName, sourceUrl } = project;
       if (appName && packageName && sourceUrl) {
-        console.log(
-          `%s quick-app: ${appName} - #${index + 1}`,
-          chalk.bgGreen.bold('STARTING...'),
-        );
+        console.log(`%s quick-app: ${appName} - #${index + 1}`, chalk.bgGreen.bold('STARTING...'));
         await createProject(project);
       } else {
         console.error(
@@ -148,6 +168,14 @@ export async function createProject(options) {
     {
       title: 'Update app icon',
       task: () => modifyIcon(options),
+    },
+    {
+      title: 'Install dependencies',
+      task: () => installDependencies(options),
+    },
+    {
+      title: 'Generate rpk',
+      task: () => generateRpk(options),
     },
   ]);
 

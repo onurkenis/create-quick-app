@@ -1,0 +1,14 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+     "build": "cross-env uglifyjs=false sign=debug webpack --config ./node_modules/fa-toolkit/webpack.config.js",
+     "release": "cross-env uglifyjs=true sign=debug webpack --config ./node_modules/fa-toolkit/webpack.config.js"
+
+  },
+  "devDependencies": {
+    "cross-env": "^6.0.3",
+    "fa-toolkit": "file:fa-toolkit-2.5.2-Stable.300.tgz"
+  }
+}

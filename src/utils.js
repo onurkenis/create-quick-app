@@ -1,6 +1,7 @@
 import fs from 'fs';
 import ncp from 'ncp';
 import path from 'path';
+import { exec } from 'child_process';
 import { promisify } from 'util';
 import {
   MANIFEST_PATH_IN_TEMPLATE,
@@ -35,4 +36,12 @@ export const getUpdatedManifest = (options, manifestJson) => {
   manifest.name = options.appName;
 
   return JSON.stringify(manifest, null, 2);
+};
+
+export const asyncExec = (cmd) => {
+  return new Promise((resolve, reject) => {
+    exec(cmd, (error, stdout, stderr) => {
+      stdout ? resolve(stdout) : reject(stderr);
+    });
+  });
 };
