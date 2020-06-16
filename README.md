@@ -26,6 +26,14 @@ create-quick-app --fromJson=path_of_json                 # run from anywhere
 npx @onurkenis/create-quick-app --fromJson=path_of_json  # run via npx without installing 
 ```
 
+3. To get rpk file, do followings and check `PROJECT_PATH/dist` folder.
+
+```sh
+cd PROJECT_PATH
+npm install
+npm run release
+```
+
 ## Options
 
 All options can be empty when running the create-quick-app. Missing fields will be asked respectively.

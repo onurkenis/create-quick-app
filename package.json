@@ -1,7 +1,7 @@
 {
   "name": "@onurkenis/create-quick-app",
-  "version": "2.0.0",
-  "description": "A CLI to generate Huawei Quick App easily.",
+  "version": "2.1.0",
+  "description": "A CLI to generate Huawei Quick Apps easily.",
   "main": "src/index.js",
   "repository": {
     "type": "git",
@@ -20,7 +20,7 @@
   "keywords": [
     "cli",
     "huawei",
-    "hms",
+    "HMS",
     "QuickApp",
     "quick-app",
     "quick-app-cli",
