@@ -40,6 +40,6 @@
     "inquirer": "^7.1.0",
     "listr": "^0.14.3",
     "ncp": "^2.0.0",
-    "replace-in-file": "^5.0.2"
+    "replace-in-file": "^8.4.0"
   }
 }
